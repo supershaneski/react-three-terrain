@@ -26,12 +26,7 @@ const MapPanel = (props) => {
                 <button onClick={selectMap('map8.png')} className={classes.button}>Map 2</button>
                 <button onClick={selectMap('map9.jpg')} className={classes.button}>Map 3</button>
                 <button onClick={selectMap('map12.png')} className={classes.button}>Map 4</button>
-                <button onClick={selectMap('map16.jpg')} className={classes.button}>Map 5</button>
-                <button onClick={selectMap('map19.jpg')} className={classes.button}>Map 6</button>
-                <button onClick={selectMap('map20.jpg')} className={classes.button}>Map 7</button>
-                <button onClick={selectMap('map23.jpg')} className={classes.button}>Map 8</button>
-                <button onClick={selectMap('island3.jpg')} className={classes.button}>Map 9</button>
-                <button onClick={selectMap('meteor.png')} className={classes.button}>Map 10</button>
+                <button onClick={selectMap('island3.jpg')} className={classes.button}>Map 5</button>
                 <button onClick={selectMap('')} className={classes.button}>Clear</button>
             </div>
         </div>
