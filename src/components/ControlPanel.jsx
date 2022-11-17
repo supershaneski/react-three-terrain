@@ -96,7 +96,7 @@ const ControlPanel = (props) => {
                     <label style={{
                         color: !props.seaFlag ? '#555' : '#fff',
                     }}>Sea Level</label>
-                    <input disabled={!props.seaFlag} type="range" min={1} max={10} 
+                    <input disabled={!props.seaFlag} type="range" min={1} max={100} 
                     value={props.seaLevel} onChange={props.onChangeSeaLevel} />
                 </div>
                 <div className={classes.item}>

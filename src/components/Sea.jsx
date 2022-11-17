@@ -3,7 +3,7 @@ import React from 'react'
 import { 
     PlaneGeometry, 
     //BoxGeometry, 
-    //DoubleSide, 
+    DoubleSide, 
     //RepeatWrapping, 
     //TextureLoader, 
     //Float32BufferAttribute 
@@ -42,17 +42,18 @@ const Sea = (props) => {
     
     useFrame(({ clock }) => {
         
-        meshRef.current.position.y += 0.003 * Math.sin(clock.getElapsedTime())
+        meshRef.current.position.y += 0.0045 * Math.sin(clock.getElapsedTime())
 
     })
 
-    const py = parseInt(props.level) * 2
+    const py = parseInt(props.level) * 0.5
 
     return (
         <mesh ref={meshRef} geometry={geometry} 
         rotation={[-0.5 * Math.PI, 0, 0]} 
         position={[0, py, 0]}>
             <meshPhongMaterial 
+            //side={DoubleSide}
             shininess={100} 
             specular={0x050505} 
             color={0x002633} 

@@ -34,6 +34,9 @@ const Stage = (props) => {
 
     const NavControl = () => props.naviMode === 1 ? <MapControls /> : props.naviMode === 2 ? <ArcballControls enablePan={true} enableRotate={true} enableZoom={true} /> : <OrbitControls />
 
+    // bottom light to shine on sea
+    //<directionalLight position={[0, -2, 0]} rotation={[-0.5 * Math.PI, 0, 0]} intensity={1.5} />
+            
     return (
         <Canvas camera={{ fov: 70, position: [10, 25, 60]}}>
             <NavControl />
