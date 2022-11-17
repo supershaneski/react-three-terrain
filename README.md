@@ -93,6 +93,8 @@ return (
 
 In the future, I would like to use `vertexColors` to show the elevations just like in terrain maps.
 
+> ***Please note that the sample maps/images are taken from the web***
+
 # Setup
 
 Clone the repository and install the dependencies
