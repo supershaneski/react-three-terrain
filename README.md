@@ -30,7 +30,7 @@ for(var y = 0; y < img.naturalHeight; y++){
     for(var x = 0; x < img.naturalWidth; x++){
         
         var pixeldata = ctx.getImageData(x, y, 1, 1).data
-        // pixel data constains RGB data of the pixel
+        // pixel data contains RGB data of the pixel
 
     }
 }
@@ -44,15 +44,18 @@ const gs = (0.21 * pixeldata[0]) + (0.72 * pixeldata[1]) + (0.07 * pixeldata[2])
 
 ```
 
-The user can also use customize equation by changing the coefficients to get the desired relief height.
+You can also customize the equation by changing the coefficients to get the desired relief height.
 
 ```javascript
 const gs = (redCoeff) * pixeldata[0]) + (greenCoeff * pixeldata[1]) + (blueCoeff * pixeldata[2])
 ```
 
-The images I used for the demo are located in the `public` directory so it is possible to add more or even perhaps upload from the user.
+The images I used for the demo are located in the `public` directory so it is possible to add more or perhaps even allow upload from the user.
+
 To get the best result, it is advisable to use `black and white` images.
-I also included a color image to show what will happen.
+The `black` represents the lowest level while `white` the highest level.
+Sharp contrasts will become deep ridges so it is better to blur or soften the edges.
+Adjust the resulting height using the `level` slider in `OPTIONS` panel to make the output visually appealing.
 
 In `three.js`, I use `PlaneGeometry` to prepare the `mesh`, rotate it so that it will be flat on the ground and applied the relief values by editing the vertices.
 

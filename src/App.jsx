@@ -4,6 +4,7 @@ import classes from './App.module.css'
 import Three from './components/Three'
 import Scene from './components/Scene'
 
+import Clock from './components/Clock'
 import ControlPanel from './components/ControlPanel'
 import MapPanel from './components/MapPanel'
 
@@ -189,6 +190,9 @@ function App() {
           <span>Loading...</span>
         </div>
       }
+      <div className={classes.time}>
+        <Clock />
+      </div>
     </div>
   )
 }
