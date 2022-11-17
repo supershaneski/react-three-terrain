@@ -1,0 +1,42 @@
+.container {
+    position: relative;
+}
+.header {
+    position: relative;
+    padding: 2px 0;
+    text-align: center;
+}
+.headerText {
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+.main {
+    padding: 5px 10px;
+}
+
+.item {
+    position: relative;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.item:last-child {
+    margin-bottom: 0;
+}
+.item label {
+    font-size: 0.8em;
+}
+
+input {
+    font-size: 0.8em;
+}
+input[type="text"] {
+    width: 6em;
+}
+select {
+    font-size: 0.7em;
+}
+input[type="text"].number {
+    width: 3em;
+}
