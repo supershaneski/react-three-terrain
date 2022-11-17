@@ -1,5 +1,6 @@
 import React from 'react'
 import Terrain from './Terrain'
+import Sea from './Sea'
 
 const Scene = (props) => {
 
@@ -16,7 +17,13 @@ const Scene = (props) => {
     }
 
     return (
-        <Terrain mapData={mapData} options={props.options} />
+        <group>
+            <Terrain mapData={mapData} options={props.options} />
+            {
+                props.options.seaFlag &&
+                <Sea level={props.options.seaLevel} />
+            }
+        </group>
     )
 }
 

@@ -4,6 +4,7 @@ import classes from './App.module.css'
 import Three from './components/Three'
 import Scene from './components/Scene'
 
+import Clock from './components/Clock'
 import ControlPanel from './components/ControlPanel'
 import MapPanel from './components/MapPanel'
 
@@ -27,6 +28,9 @@ function App() {
   const [blueCoeff, setBlueCoeff] = React.useState(0.07)
 
   const [naviMode, setNaviMode] = React.useState(0)
+
+  const [seaFlag, setSeaFlag] = React.useState(true)
+  const [seaLevel, setSeaLevel] = React.useState(2)
 
   React.useEffect(() => {
 
@@ -149,6 +153,8 @@ function App() {
             textureFlag: textureFlag,
             colorFlag: colorFlag,
             color: color,
+            seaLevel: seaLevel,
+            seaFlag: seaFlag,
           }} />
         </Three.Stage>
       </div>
@@ -181,6 +187,10 @@ function App() {
         onChangeColor={(e) => setColor(e.target.value)}
         naviMode={naviMode}
         onChangeNaviMode={(e) => setNaviMode(parseInt(e.target.value))}
+        seaFlag={seaFlag}
+        onChangeSeaFlag={(e) => setSeaFlag(e.target.checked)}
+        seaLevel={seaLevel}
+        onChangeSeaLevel={(e) => setSeaLevel(e.target.value)}
         />
       </div>
       {
@@ -189,6 +199,9 @@ function App() {
           <span>Loading...</span>
         </div>
       }
+      <div className={classes.time}>
+        <Clock />
+      </div>
     </div>
   )
 }

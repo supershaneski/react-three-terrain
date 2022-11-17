@@ -34,6 +34,9 @@ input {
 input[type="text"] {
     width: 6em;
 }
+input[type="range"] {
+    width: 9em;
+}
 select {
     font-size: 0.7em;
 }

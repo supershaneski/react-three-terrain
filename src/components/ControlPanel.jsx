@@ -88,6 +88,18 @@ const ControlPanel = (props) => {
                     value={props.color} onChange={props.onChangeColor} />
                 </div>
                 <div className={classes.item}>
+                    <label>Show Sea</label>
+                    <input type="checkbox"
+                    checked={props.seaFlag} onChange={props.onChangeSeaFlag} />
+                </div>
+                <div className={classes.item}>
+                    <label style={{
+                        color: !props.seaFlag ? '#555' : '#fff',
+                    }}>Sea Level</label>
+                    <input disabled={!props.seaFlag} type="range" min={1} max={10} 
+                    value={props.seaLevel} onChange={props.onChangeSeaLevel} />
+                </div>
+                <div className={classes.item}>
                     <label>Navigation</label>
                     <select value={props.naviMode} onChange={props.onChangeNaviMode}>
                         <option value={0}>OrbitControls</option>
