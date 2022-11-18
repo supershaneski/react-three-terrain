@@ -39,7 +39,7 @@ const SelectItem = ({ label, value, onChange, items }) => {
     )
 }
 
-const TextItem = ({ label, disabled, value, width = '6em', onChange }) => {
+const TextItem = ({ label, disabled, value, width = '5em', onChange }) => {
     return (
         <div className={classes.item}>
             <label style={{

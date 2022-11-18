@@ -21,6 +21,3 @@ input[type="text"] {
 input[type="range"] {
     width: 9em;
 }
-input[type="text"].number {
-    width: 3em;
-}
