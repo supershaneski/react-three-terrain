@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './MapPanel.module.css'
+import BasePanel from './BasePanel'
 
 const mapList = [
     { text: 'Map 1', map: 'map2.jpg' },
@@ -14,33 +15,22 @@ const setClassButton = (selected) => selected ? [classes.button, classes.selecte
 
 const MapPanel = (props) => {
 
-    const [open, setOpen] = React.useState(false)
-    
     const selectMap = (smap) => () => {
         props.onSelect(smap)
     }
-    
+
     return (
-        <div className={classes.container}>
-            <div className={classes.header} onClick={() => setOpen(f => !f)}>
-                <span className={classes.headerText} style={{
-                    color: open ? '#646cff' : '#fff'
-                }}>Select map</span>
-            </div>
-            <div className={classes.main} style={{
-                display: open ? 'block' : 'none',
-            }}>
-                {
-                    mapList.map((item) => {
-                        return (
-                            <button key={item.map} onClick={selectMap(item.map)} className={setClassButton(props.selected === item.map)}>{ item.text }</button>
-                        )
-                    })
-                }
-                <button onClick={selectMap('')} className={[classes.button, classes.clear].join(' ')}>Clear</button>
-            </div>
-        </div>
+        <BasePanel title="Select Map">
+            {
+                mapList.map((item) => {
+                    return (
+                        <button key={item.map} onClick={selectMap(item.map)} className={setClassButton(props.selected === item.map)}>{ item.text }</button>
+                    )
+                })
+            }
+            <button onClick={selectMap('')} className={[classes.button, classes.clear].join(' ')}>Clear</button>
+        </BasePanel>
     )
 }
 
-export default MapPanel
+export default React.memo(MapPanel)

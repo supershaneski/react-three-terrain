@@ -11,7 +11,7 @@ const CheckItem = ({ label, checked, onChange }) => {
     )
 }
 
-const SliderItem = ({ label, disabled, value, onChange }) => {
+const SliderItem = ({ label, disabled = false, value, onChange }) => {
     return (
         <div className={classes.item}>
             <label style={{
@@ -53,11 +53,27 @@ const TextItem = ({ label, disabled, value, width = '6em', onChange }) => {
     )
 }
 
+function areEqual(prevProps, nextProps) {
+    
+    let isEqual = true
+
+    for(let k in prevProps) {
+        if(typeof prevProps[k] !== 'function') {
+            if(prevProps[k] !== nextProps[k]) {
+                isEqual = false
+                break
+            }
+        }
+    }
+
+    return isEqual
+}
+
 const Options = ({ children }) => <>{ children }</>
 
-Options.CheckItem = CheckItem
-Options.SliderItem = SliderItem
-Options.SelectItem = SelectItem
-Options.TextItem = TextItem
+Options.CheckItem = React.memo(CheckItem, areEqual)
+Options.SliderItem = React.memo(SliderItem, areEqual)
+Options.SelectItem = React.memo(SelectItem, areEqual)
+Options.TextItem = React.memo(TextItem, areEqual)
 
 export default Options

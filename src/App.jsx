@@ -94,9 +94,7 @@ function App() {
   }, [mapSource])
 
   const handleMapClick = useCallback((map) => {
-
-    console.log("map click", map, loading)
-
+    
     if(loading) {
       return
     }
