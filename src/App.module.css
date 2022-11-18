@@ -16,11 +16,11 @@
   position: absolute;
   right: 10px;
   top: 10px;
-  width: 220px;
-  z-index: 4;
+  width: 240px;
+  z-index: 6;
 }
 .maps {
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 1px 2px 0px;
   background-color: #0009;
   border-radius: 6px;
   position: absolute;
@@ -39,7 +39,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 20;
 }
 
 .time {

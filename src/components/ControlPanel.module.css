@@ -3,43 +3,14 @@
 }
 .header {
     position: relative;
-    padding: 2px 0;
+    padding: 5px 0;
     text-align: center;
 }
 .headerText {
-    font-size: 0.8em;
+    font-size: 0.9em;
+    font-weight: 600;
     text-transform: uppercase;
 }
 .main {
-    padding: 5px 10px;
-}
-
-.item {
-    position: relative;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.item:last-child {
-    margin-bottom: 0;
-}
-.item label {
-    font-size: 0.8em;
-}
-
-input {
-    font-size: 0.8em;
-}
-input[type="text"] {
-    width: 6em;
-}
-input[type="range"] {
-    width: 9em;
-}
-select {
-    font-size: 0.7em;
-}
-input[type="text"].number {
-    width: 3em;
+    padding: 0px 10px 5px 10px;
 }

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import classes from './App.module.css'
 
 import Three from './components/Three'
 import Scene from './components/Scene'
 
+import Clock from './components/Clock'
 import ControlPanel from './components/ControlPanel'
 import MapPanel from './components/MapPanel'
 
@@ -68,8 +69,6 @@ function App() {
         }
       }
       
-      setLoading(false)
-
       setMapData({
         map: mapSource,
         width: img.naturalWidth,
@@ -77,6 +76,8 @@ function App() {
         max: max,
         data: data,
       })
+
+      setLoading(false)
 
     }
     
@@ -92,7 +93,13 @@ function App() {
 
   }, [mapSource])
 
-  const handleMapClick = (map) => {
+  const handleMapClick = useCallback((map) => {
+
+    console.log("map click", map, loading)
+
+    if(loading) {
+      return
+    }
 
     if(!map) {
       setMapSource(null)
@@ -102,7 +109,7 @@ function App() {
     setLoading(true)
     setMapSource(map)
 
-  }
+  }, [loading])
 
   const handleChangeTexture = (e) => {
 
@@ -158,7 +165,7 @@ function App() {
         </Three.Stage>
       </div>
       <div className={classes.maps}>
-        <MapPanel onSelect={handleMapClick} />
+        <MapPanel selected={mapSource} onSelect={handleMapClick} />
       </div>
       <div className={classes.control}>
         <ControlPanel 
@@ -198,6 +205,9 @@ function App() {
           <span>Loading...</span>
         </div>
       }
+      <div className={classes.time}>
+        <Clock />
+      </div>
     </div>
   )
 }

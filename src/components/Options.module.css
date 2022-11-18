@@ -1,0 +1,26 @@
+.item {
+    position: relative;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.item:last-child {
+    margin-bottom: 0;
+}
+.item label {
+    font-size: 0.9em;
+}
+
+input, select {
+    font-size: 0.9em;
+}
+input[type="text"] {
+    width: 6em;
+}
+input[type="range"] {
+    width: 9em;
+}
+input[type="text"].number {
+    width: 3em;
+}
