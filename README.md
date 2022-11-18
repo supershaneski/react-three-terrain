@@ -7,14 +7,15 @@ This React project is a simple `terrain map viewer` using [three.js](https://thr
 
 This is a coding exercise to explore `three.js`, making custom geometry, etc.
 
-At first, I was thinking of making some `procedural terrain builder` but I cannot find any interesting function to generate `relief map` so I decided to make the terrain based on `2D image` instead.
-It will be like a elevation viewer for data from a `geographic information system` (GIS).
+At first, I was thinking of making some `procedural terrain map builder` but I cannot find any interesting function to generate a `relief map` so I decided to make the terrain based on `height maps` instead.
+
+I envision it to end up like an 3D elevation viewer for some `geographic information system` (GIS).
 
 # Application
 
 I am using [@react-three/fiber](https://github.com/pmndrs/react-three-fiber) as the React renderer for `three.js` and [@react-three/drei](https://github.com/pmndrs/drei) for helper components.
 
-I use the pixel data from the 2D image to create the relief in 3D.
+I use the pixel data from the 2D image `height map` to create the relief in 3D.
 I extract it using the `canvas` API `getImageData`.
 
 ```javascript
@@ -44,7 +45,8 @@ const gs = (0.21 * pixeldata[0]) + (0.72 * pixeldata[1]) + (0.07 * pixeldata[2])
 
 ```
 
-You can also customize the equation by changing the coefficients to get the desired relief height.
+The included height maps are all in black and white but it is possible to use colored images.
+Use the custom function and tinker on the value of the coefficients to get the desired relief height.
 
 ```javascript
 const gs = (redCoeff) * pixeldata[0]) + (greenCoeff * pixeldata[1]) + (blueCoeff * pixeldata[2])
@@ -93,7 +95,7 @@ return (
 
 In the future, I would like to use `vertexColors` to show the elevations just like in terrain maps.
 
-> ***Please note that the sample maps/images are taken from the web***
+> ***Please note that the sample height maps are taken from the web***
 
 # Setup
 

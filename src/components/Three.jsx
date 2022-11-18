@@ -30,22 +30,29 @@ import {
 
 const Three = ({ children }) => <>{ children }</>
 
-const Stage = (props) => {
+const NavControl = ({ naviMode }) => {
 
-    const NavControl = () => props.naviMode === 1 ? <MapControls /> : props.naviMode === 2 ? <ArcballControls enablePan={true} enableRotate={true} enableZoom={true} /> : <OrbitControls />
+    switch(naviMode) {
+        case 1:
+            return <MapControls />
+        case 2:
+            return <ArcballControls enablePan={true} enableRotate={true} enableZoom={true} />
+        default:
+            return <OrbitControls />
+    }
+}
 
-    // bottom light to shine on sea
-    //<directionalLight position={[0, -2, 0]} rotation={[-0.5 * Math.PI, 0, 0]} intensity={1.5} />
-            
+const Stage = ({ naviMode, children }) => {
+
     return (
         <Canvas camera={{ fov: 70, position: [10, 25, 60]}}>
-            <NavControl />
+            <NavControl naviMode={naviMode} />
             <ambientLight args={[0xffffff]} intensity={0.3} />
             <directionalLight position={[0, 2, 0]} rotation={[1.2 * Math.PI, 0, 0]} intensity={2.1} />
             <directionalLight position={[0, 0, -5]} rotation={[0, 0.75 * Math.PI, 0]} intensity={0.8} />
             <directionalLight position={[0, 0, 5]} rotation={[0, -0.75 * Math.PI, 0]} intensity={0.6} />
             {
-                props.children
+                children
             }
         </Canvas>
     )

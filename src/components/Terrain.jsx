@@ -3,7 +3,7 @@ import React from 'react'
 import { 
     PlaneGeometry, 
     //BoxGeometry, 
-    DoubleSide, 
+    //DoubleSide, 
     //RepeatWrapping, 
     TextureLoader, 
     //Float32BufferAttribute 
@@ -30,7 +30,7 @@ const MaterialShader = (props) => {
     
     if(props.normalColor) {
         
-        return <meshNormalMaterial side={DoubleSide} wireframe={props.wireframe} flatShading={props.flatShading} />
+        return <meshNormalMaterial wireframe={props.wireframe} flatShading={props.flatShading} />
 
     } else {
 
@@ -115,8 +115,6 @@ const MaterialShader = (props) => {
                     />
                 }
 
-                
-
             }
             
         }
@@ -138,51 +136,14 @@ const Terrain = ({ mapData, options }) => {
 
     for (let i = 0; i < verts.length; i+=3) {
     
-        let k = i / 3
+        let k = parseInt(i / 3)
 
         if(k < data.length) {
             verts[i + 2] = delta * data[k].value
         }
 
     }
-
-    //const normals = geometry.attributes.normal.array
-    //const uvs = geometry.attributes.uv.array
     
-    /*
-    const shaderMaterial = options.normalColor ? 
-    <meshNormalMaterial 
-    wireframe={options.wireframe} 
-    flatShading={options.flatShading}
-    /> : 
-    <meshStandardMaterial 
-    wireframe={options.wireframe}
-    color={options.colorFlag ? options.color : null} 
-    flatShading={options.flatShading}
-    map={options.textureFlag ? texture : null}
-    />
-    */
-
-    /*
-    <mesh geometry={geometry} rotation={[-0.5 * Math.PI, 0, 0]}>
-            <MaterialShader texture={texture} {...options} />
-        </mesh>
-    */
-
-        /*
-        <bufferAttribute
-                attach="attributes-color"
-                array={colors}
-                count={colors.length / 3}
-                itemSize={3}
-                />
-                <bufferAttribute
-                attach="index"
-                array={indices}
-                count={indices.length}
-                itemSize={1}
-                />*/
-
     return (
         <mesh geometry={geometry} rotation={[-0.5 * Math.PI, 0, 0]}>
             <MaterialShader texture={texture} {...options} />

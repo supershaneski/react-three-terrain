@@ -3,7 +3,7 @@ import React from 'react'
 import { 
     PlaneGeometry, 
     //BoxGeometry, 
-    DoubleSide, 
+    //DoubleSide, 
     //RepeatWrapping, 
     //TextureLoader, 
     //Float32BufferAttribute 
@@ -26,8 +26,7 @@ import {
     Billboard,
 } from '@react-three/drei'*/
 
-import { useSpring, animated, config } from '@react-spring/three'
-
+//import { useSpring, animated, config } from '@react-spring/three'
 
 const Sea = (props) => {
 
@@ -42,16 +41,16 @@ const Sea = (props) => {
     
     useFrame(({ clock }) => {
         
-        meshRef.current.position.y += 0.0045 * Math.sin(clock.getElapsedTime())
-
+        if(props.moveFlag) {
+            meshRef.current.position.y += (parseFloat(props.moveCoeff)/100) * Math.sin(clock.getElapsedTime())
+        }
+        
     })
 
-    const py = parseInt(props.level) * 0.5
+    const py = parseInt(props.level) * parseFloat(props.levelCoeff)
 
     return (
-        <mesh ref={meshRef} geometry={geometry} 
-        rotation={[-0.5 * Math.PI, 0, 0]} 
-        position={[0, py, 0]}>
+        <mesh ref={meshRef} geometry={geometry} rotation={[-0.5 * Math.PI, 0, 0]} position={[0, py, 0]}>
             <meshPhongMaterial 
             //side={DoubleSide}
             shininess={100} 
@@ -66,4 +65,4 @@ const Sea = (props) => {
     )
 }
 
-export default Sea
+export default React.memo(Sea)

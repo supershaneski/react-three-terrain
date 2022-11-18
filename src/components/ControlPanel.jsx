@@ -29,6 +29,9 @@ const ControlPanel = (props) => {
             <Options.TextItem label="Color" disabled={!props.colorFlag} value={props.color} onChange={props.onChangeColor} />
             <Options.CheckItem label="Show Sea" checked={props.seaFlag} onChange={props.onChangeSeaFlag} />
             <Options.SliderItem label="Sea Level" disabled={!props.seaFlag} value={props.seaLevel} onChange={props.onChangeSeaLevel} />
+            <Options.TextItem label="Level Factor" width="3em" value={props.seaLevelCoeff} onChange={props.onChangeSeaLevelCoeff} />
+            <Options.CheckItem label="Animated" checked={props.seaMove} onChange={props.onChangeSeaMove} />
+            <Options.TextItem label="Jerk Factor" disabled={!props.seaMove} width="3em" value={props.seaMoveCoeff} onChange={props.onChangeSeaMoveCoeff} />
             <Options.SelectItem label="Navigation" value={props.naviMode} onChange={props.onChangeNaviMode} items={navigationList} />
         </BasePanel>
     )

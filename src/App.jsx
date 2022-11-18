@@ -4,7 +4,6 @@ import classes from './App.module.css'
 import Three from './components/Three'
 import Scene from './components/Scene'
 
-import Clock from './components/Clock'
 import ControlPanel from './components/ControlPanel'
 import MapPanel from './components/MapPanel'
 
@@ -31,6 +30,9 @@ function App() {
 
   const [seaFlag, setSeaFlag] = React.useState(true)
   const [seaLevel, setSeaLevel] = React.useState(2)
+  const [seaLevelCoeff, setSeaLevelCoeff] = React.useState(0.5)
+  const [seaMove, setSeaMove] = React.useState(true)
+  const [seaMoveCoeff, setSeaMoveCoeff] = React.useState(0.25)
 
   React.useEffect(() => {
 
@@ -109,10 +111,14 @@ function App() {
 
   }, [loading])
 
-  const handleChangeTexture = (e) => {
+  const handleChangeTexture = useCallback((e) => {
 
     setTextureFlag(e.target.checked)
 
+    if(!mapSource) {
+      return
+    }
+
     const tmpMap = mapSource
 
     setLoading(true)
@@ -125,12 +131,16 @@ function App() {
       
     }, 300)
 
-  }
+  }, [mapSource])
 
-  const handleChangeFlatShading = (e) => {
-    
+  const handleChangeFlatShading = useCallback((e) => {
+
     setFlatShading(e.target.checked)
 
+    if(!mapSource) {
+      return
+    }
+    
     const tmpMap = mapSource
 
     setLoading(true)
@@ -142,7 +152,7 @@ function App() {
       
     }, 300)
 
-  }
+  }, [mapSource])
   
   return (
     <div className={classes.container}>
@@ -159,6 +169,9 @@ function App() {
             color: color,
             seaLevel: seaLevel,
             seaFlag: seaFlag,
+            seaLevelCoeff: seaLevelCoeff,
+            seaMove: seaMove,
+            seaMoveCoeff: seaMoveCoeff,
           }} />
         </Three.Stage>
       </div>
@@ -195,6 +208,12 @@ function App() {
         onChangeSeaFlag={(e) => setSeaFlag(e.target.checked)}
         seaLevel={seaLevel}
         onChangeSeaLevel={(e) => setSeaLevel(e.target.value)}
+        seaLevelCoeff={seaLevelCoeff}
+        onChangeSeaLevelCoeff={(e) => setSeaLevelCoeff(e.target.value)}
+        seaMove={seaMove}
+        onChangeSeaMove={(e) => setSeaMove(e.target.checked)}
+        seaMoveCoeff={seaMoveCoeff}
+        onChangeSeaMoveCoeff={(e) => setSeaMoveCoeff(e.target.value)}
         />
       </div>
       {
@@ -203,9 +222,6 @@ function App() {
           <span>Loading...</span>
         </div>
       }
-      <div className={classes.time}>
-        <Clock />
-      </div>
     </div>
   )
 }

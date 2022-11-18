@@ -2,26 +2,38 @@ import React from 'react'
 import Terrain from './Terrain'
 import Sea from './Sea'
 
-const Scene = (props) => {
+const Scene = ({ data, options }) => {
 
     const [mapData, setMapData] = React.useState(null)
+    const [optionData, setOptionData] = React.useState(null)
 
     React.useEffect(() => {
 
-        setMapData(props.data)
+        setMapData(data)
 
-    }, [props.data])
+    }, [data])
 
-    if(!mapData) {
+    React.useEffect(() => {
+
+        setOptionData(options)
+
+    }, [options])
+
+    if(!mapData || !optionData) {
         return null
     }
 
     return (
         <group>
-            <Terrain mapData={mapData} options={props.options} />
+            <Terrain mapData={mapData} options={optionData} />
             {
-                props.options.seaFlag &&
-                <Sea level={props.options.seaLevel} />
+                optionData.seaFlag &&
+                <Sea 
+                level={optionData.seaLevel} 
+                levelCoeff={optionData.seaLevelCoeff}
+                moveFlag={optionData.seaMove}
+                moveCoeff={optionData.seaMoveCoeff}
+                />
             }
         </group>
     )

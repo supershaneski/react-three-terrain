@@ -8,7 +8,9 @@ const mapList = [
     { text: 'Map 3', map: 'map12.png' },
     { text: 'Map 4', map: 'island3.jpg' },
     { text: 'Map 5', map: 'map8.png' },
-    { text: 'Map 6', map: 'meteor.png' },
+    { text: 'Map 6', map: 'map26.png' },
+    { text: 'Map 7', map: 'canyon.png' }, 
+    { text: 'Map 8', map: 'victoria.jpg' }, 
 ]
 
 const setClassButton = (selected) => selected ? [classes.button, classes.selected].join(' ') : classes.button
