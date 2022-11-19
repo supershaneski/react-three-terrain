@@ -104,7 +104,7 @@ return (
 
 
 Currently, I am setting the updated geometry in `mesh` component directly.
-This is supposed to be not the recommended way but I have not figured out other way for now.
+This is supposed to be not the recommended but I have not figured out other way for now.
 
 I am also just using 50 x 50 for the plane object. 
 Adjust it to your desired size if you want or make it dynamic according to the height maps.
