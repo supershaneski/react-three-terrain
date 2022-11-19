@@ -5,6 +5,7 @@
     position: relative;
     padding: 5px 0;
     text-align: center;
+    cursor: pointer;
 }
 .headerText {
     font-size: 0.9em;

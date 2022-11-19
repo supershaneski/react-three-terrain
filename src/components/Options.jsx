@@ -1,11 +1,14 @@
 import React from 'react'
 import classes from './Options.module.css'
 
-const CheckItem = ({ label, checked, onChange }) => {
+const CheckItem = ({ label, disabled = false, checked, onChange }) => {
     return (
         <div className={classes.item}>
-            <label>{ label }</label>
+            <label style={{
+                color: disabled ? '#555' : '#fff',
+            }}>{ label }</label>
             <input type="checkbox" 
+            disabled={disabled}
             checked={checked} onChange={onChange} />
         </div>
     )
@@ -22,10 +25,12 @@ const SliderItem = ({ label, disabled = false, value, onChange }) => {
     )
 }
 
-const SelectItem = ({ label, value, onChange, items }) => {
+const SelectItem = ({ label, disabled = false, value, onChange, items }) => {
     return (
         <div className={classes.item}>
-            <label>{ label }</label>
+            <label style={{
+                color: disabled ? '#555' : '#fff',
+            }}>{ label }</label>
             <select value={value} onChange={onChange}>
             {
                 items.map((item, index) => {

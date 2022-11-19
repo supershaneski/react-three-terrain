@@ -1,5 +1,6 @@
 .item {
     position: relative;
+    padding: 3px 0;
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;

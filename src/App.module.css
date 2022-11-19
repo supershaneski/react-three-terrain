@@ -43,10 +43,11 @@
 }
 
 .time {
-  position: absolute;
+  position: fixed;
   left: 10px;
-  bottom: 5em;
+  bottom: 1em;
   z-index: 2;
+  display: none;
 }
 
 /*
