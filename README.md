@@ -95,9 +95,22 @@ return (
 )
 ```
 
-In the future, I would like to use `vertexColors` to show the elevations just like in terrain maps.
-
 > ***Please note that the sample height maps are taken from the web***
+
+# Moving Forward
+
+
+![Craggy Terrain](./docs/terrain.png "Craggy Terrain")
+
+
+Currently, I am setting the updated geometry in `mesh` component directly.
+This is supposed to be not the recommended way but I have not figured out other way for now.
+
+I am also just using 50 x 50 for the plane object. 
+Adjust it to your desired size if you want or make it dynamic according to the height maps.
+Please not that the resolution of the `height map` will greatly affect performance.
+
+In the future, I would like to use `vertexColors` to show the elevations just like in terrain maps.
 
 # Setup
 
