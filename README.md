@@ -13,6 +13,8 @@ I envision it to end up like an 3D elevation viewer for some `geographic informa
 
 # Application
 
+![screenshot](./docs/screenshot.png "App")
+
 I am using [@react-three/fiber](https://github.com/pmndrs/react-three-fiber) as the React renderer for `three.js` and [@react-three/drei](https://github.com/pmndrs/drei) for helper components.
 
 I use the pixel data from the 2D image `height map` to create the relief in 3D.
