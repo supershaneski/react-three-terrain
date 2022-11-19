@@ -96,7 +96,7 @@ function App() {
 
   }, [mapSource])
 
-  const handleMapClick = useCallback((map) => {
+  const handleMapClick = useCallback((map, nlevel) => {
     
     if(loading) {
       return
@@ -108,7 +108,9 @@ function App() {
     }
 
     setLoading(true)
+    setLevel(nlevel)
     setMapSource(map)
+    
 
   }, [loading])
 
