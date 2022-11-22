@@ -7,6 +7,9 @@
   position: relative;
   height: 100%;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .control {
@@ -47,7 +50,7 @@
   left: 10px;
   bottom: 1em;
   z-index: 2;
-  display: none;
+  /*display: none;*/
 }
 
 /*

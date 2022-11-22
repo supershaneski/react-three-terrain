@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { scaleLinear } from "d3-scale"
+
 import { 
     PlaneGeometry, 
     //BoxGeometry, 
@@ -26,11 +28,19 @@ import {
     Billboard,
 } from '@react-three/drei'*/
 
+import CustomBuffer from './CustomBuffer'
+
 const MaterialShader = (props) => {
     
     if(props.normalColor) {
+
+        if(props.wireframe) {
+            return <lineBasicMaterial wireframe flatShading={props.flatShading} />
+        } else {
+            return <meshNormalMaterial flatShading={props.flatShading} />
+        }
         
-        return <meshNormalMaterial wireframe={props.wireframe} flatShading={props.flatShading} />
+        //return <meshNormalMaterial wireframe={props.wireframe} flatShading={props.flatShading} />
 
     } else {
 
@@ -123,11 +133,164 @@ const MaterialShader = (props) => {
 
 }
 
+const domainList = [
+    [ 0, 1/8, 1/4, 2/4, 3/4, 1 ],
+    [ 0, 1/5, 2/5, 1 ],
+]
+
+const colorList = [
+    ["#010755", "#ffd7b3", "#005501", "#666000", "#663300", "#ffffff"],
+    ["#010755", "#805500", "#604020", "#003311"]
+]
+
+const scaleOption = (max, index = 0) => {
+    return {
+        domain: domainList[index].map(d => max * d),
+        color: colorList[index]
+    }
+}
+
+const formatValue = (v) => {
+    return Math.round(10 * parseInt(v.trim())/255)/10
+}
+
+const getColor = (color) => {
+
+    color = color.replace('rgb(','')
+    color = color.replace(')','')
+
+    let token = color.split(",")
+
+    return {
+        r: formatValue(token[0]),
+        g: formatValue(token[1]),
+        b: formatValue(token[2]),
+    }
+}
+
+const Terrain3 = ({ mapData, options }) => {
+
+    const { map, width, height, max, data } = mapData
+
+    const level = options.level
+
+    //const bias = (options.level - 50) / max
+
+    let texture = useLoader(TextureLoader, `/${map}`)
+
+    let sep = 0.5
+
+    const sOption = scaleOption(max, 0)
+    const colorScale = scaleLinear()
+        .domain(sOption.domain)
+        .range(sOption.color)
+
+    let { positions, colors, normals } = React.useMemo(() => {
+
+        let positions = [], colors = [], normals = []
+
+        const bias = (level - 50) / max
+
+        let k = 0
+
+        for (let yi = 0; yi < height; yi++) {
+            for (let xi = 0; xi < width; xi++) {
+                
+                let d = data[k]
+                
+                let x = sep * (xi - (width - 1) / 2)
+                let y = sep * (yi - (height + 1) / 2)
+                let z = bias * d.value
+
+                positions.push(x, y, z)
+                
+                let color = getColor(colorScale(d.value))
+                
+                colors.push(color.r, color.g, color.b)
+                
+                normals.push(0, 0, 1)
+
+                k++
+
+            }
+        }
+
+        positions = new Float32Array(positions)
+        colors = new Float32Array(colors)
+        normals = new Float32Array(normals)
+
+        return {
+            positions,
+            colors,
+            normals,
+        }
+
+    }, [width, height, sep, level, max])
+
+    let indices = React.useMemo(() => {
+
+        let indices = []
+        let i = 0
+
+        for (let yi = 0; yi < height - 1; yi++) {
+            for (let xi = 0; xi < width - 1; xi++) {
+                indices.push(i, i + 1, i + width + 1)
+                indices.push(i + width + 1, i + width, i)
+                i++
+            }
+            i++
+        }
+
+        return new Uint16Array(indices)
+
+    }, [width, height])
+
+    let uvs = React.useMemo(() => {
+
+        let uvs = []
+
+        for (let y = height - 1; y >= 0; y--) {
+            for (let x = 0; x < width; x++) {
+
+                const u = Math.round(10000 * x / width)/10000
+                const v = Math.round(10000 * y / height)/10000
+
+                uvs.push(u, v)
+
+            }
+        }
+        
+        return new Float32Array(uvs)
+
+    }, [width, height])
+
+    const attributes = [
+        { name: "attributes-position", items: positions, size: 3 },
+        { name: "attributes-normal", items: normals, size: 3 },
+        { name: "attributes-color", items: colors, size: 3 },
+        { name: "attributes-uv", items: uvs, size: 2 },
+        { name: "index", items: indices, size: 1 },
+    ]
+
+    //<meshStandardMaterial map={texture} vertexColors flatShading />
+
+    return (
+        <mesh rotation={[-0.5 * Math.PI, 0, 0]}>
+            <CustomBuffer.Geometry attributes={attributes} />
+            <MaterialShader texture={texture} {...options} />
+        </mesh>
+    )
+
+}
+
 const Terrain = ({ mapData, options }) => {
 
     const { map, width, height, max, data } = mapData
 
     let texture = useLoader(TextureLoader, `/${map}`)
+
+
+
 
     const geometry = new PlaneGeometry( 50, 50, width - 1, height - 1 )
     const verts = geometry.attributes.position.array

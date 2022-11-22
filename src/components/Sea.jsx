@@ -3,7 +3,7 @@ import React from 'react'
 import { 
     PlaneGeometry, 
     //BoxGeometry, 
-    //DoubleSide, 
+    DoubleSide, 
     //RepeatWrapping, 
     //TextureLoader, 
     //Float32BufferAttribute 
@@ -32,7 +32,14 @@ const Sea = (props) => {
 
     const meshRef = React.useRef()
     
-    const geometry = new PlaneGeometry( 50, 50, 200, 200 )
+    const sep = 0.5
+
+    const width = sep * props.width
+    const height = sep * props.height
+    
+    //const geometry = new PlaneGeometry( 50, 50, 200, 200 )
+    const geometry = new PlaneGeometry( width, height, 200, 200 ) // size becomes dynamic 
+    
     const verts = geometry.attributes.position.array
 
     for(let i = 0; i < verts.length; i += 3) {
@@ -52,7 +59,7 @@ const Sea = (props) => {
     return (
         <mesh ref={meshRef} geometry={geometry} rotation={[-0.5 * Math.PI, 0, 0]} position={[0, py, 0]}>
             <meshPhongMaterial 
-            //side={DoubleSide}
+            side={DoubleSide}
             shininess={100} 
             specular={0x050505} 
             color={0x002633} 

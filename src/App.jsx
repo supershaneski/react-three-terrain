@@ -1,14 +1,21 @@
 import React, { useCallback } from 'react'
 import classes from './App.module.css'
 
-import Three from './components/Three'
+//import Three from './components/Three'
 import Scene from './components/Scene'
 
 import Clock from './components/Clock'
 import ControlPanel from './components/ControlPanel'
 import MapPanel from './components/MapPanel'
 
+import useDebounce from './utils/useDebounce'
+import { GlobalContext } from './store/GlobalState'
+
 function App() {
+
+  const { state, dispatch } = React.useContext(GlobalContext)
+  //state.app.isDarkMode
+  //dispatch({type: 'app-set', payload: { isDarkMode: isDarkMode }})
 
   const [loading, setLoading] = React.useState(false)
   const [mapData, setMapData] = React.useState(null)
@@ -35,6 +42,10 @@ function App() {
   const [seaMove, setSeaMove] = React.useState(true)
   const [seaMoveCoeff, setSeaMoveCoeff] = React.useState(0.25)
 
+  const debouncedLevel = useDebounce(level, 200)
+
+  //React.useEffect(() => console.log("level", debouncedLevel), [debouncedLevel])
+  
   React.useEffect(() => {
 
     const loadImage = () => {
@@ -114,6 +125,27 @@ function App() {
 
   }, [loading])
 
+  const handleChangeLevel = useCallback((e) => {
+
+    setLevel(e.target.value)
+
+    if(!mapSource) {
+      return
+    }
+
+    const tmpMap = mapSource
+
+    setLoading(true)
+    setMapSource(null)
+    
+    setTimeout(() => {
+
+      setMapSource(tmpMap)
+      
+    }, 300)
+
+  }, [mapSource])
+
   const handleChangeTexture = useCallback((e) => {
 
     setTextureFlag(e.target.checked)
@@ -160,71 +192,19 @@ function App() {
   return (
     <div className={classes.container}>
       <div className={classes.canvas}>
-        <Three.Stage naviMode={naviMode}>
-          <Scene data={mapData} 
-          options={{ 
-            level: level, 
-            normalColor: normalColor,
-            wireframe: wireframe,
-            flatShading: flatShading,
-            textureFlag: textureFlag,
-            colorFlag: colorFlag,
-            color: color,
-            seaLevel: seaLevel,
-            seaFlag: seaFlag,
-            seaLevelCoeff: seaLevelCoeff,
-            seaMove: seaMove,
-            seaMoveCoeff: seaMoveCoeff,
-          }} />
-        </Three.Stage>
+        <Scene />
       </div>
       <div className={classes.maps}>
-        <MapPanel selected={mapSource} onSelect={handleMapClick} />
+        <MapPanel />
       </div>
       <div className={classes.control}>
-        <ControlPanel 
-        level={level}
-        onChangeLevel={(e) => setLevel(e.target.value)}
-        reliefFunc={reliefFunc}
-        onChangeReliefFunc={(e) => setReliefFunc(parseInt(e.target.value))}
-        redCoeff={redCoeff}
-        onChangeRedCoeff={(e) => setRedCoeff(e.target.value)}
-        greenCoeff={greenCoeff}
-        onChangeGreenCoeff={(e) => setGreenCoeff(e.target.value)}
-        blueCoeff={blueCoeff}
-        onChangeBlueCoeff={(e) => setBlueCoeff(e.target.value)}
-        normalColor={normalColor}
-        onChangeNormalColor={(e) => setNormalColor(e.target.checked)}
-        wireframe={wireframe}
-        onChangeWireframe={(e) => setWireframe(e.target.checked)}
-        flatShading={flatShading}
-        onChangeFlatShading={handleChangeFlatShading}
-        textureFlag={textureFlag}
-        onChangeTextureFlag={handleChangeTexture}
-        colorFlag={colorFlag}
-        onChangeColorFlag={(e) => setColorFlag(e.target.checked)}
-        color={color}
-        onChangeColor={(e) => setColor(e.target.value)}
-        naviMode={naviMode}
-        onChangeNaviMode={(e) => setNaviMode(parseInt(e.target.value))}
-        seaFlag={seaFlag}
-        onChangeSeaFlag={(e) => setSeaFlag(e.target.checked)}
-        seaLevel={seaLevel}
-        onChangeSeaLevel={(e) => setSeaLevel(e.target.value)}
-        seaLevelCoeff={seaLevelCoeff}
-        onChangeSeaLevelCoeff={(e) => setSeaLevelCoeff(e.target.value)}
-        seaMove={seaMove}
-        onChangeSeaMove={(e) => setSeaMove(e.target.checked)}
-        seaMoveCoeff={seaMoveCoeff}
-        onChangeSeaMoveCoeff={(e) => setSeaMoveCoeff(e.target.value)}
-        />
+        <ControlPanel />
       </div>
-      {
-        loading &&
-        <div className={classes.loader}>
-          <span>Loading...</span>
-        </div>
-      }
+      <GlobalContext.Consumer>
+        {({ state }) => {
+          return state.app.status === 1 ? <div className={classes.loader}><span>Loading...</span></div> : null
+        }}
+      </GlobalContext.Consumer>
       <div className={classes.time}>
         <Clock />
       </div>
