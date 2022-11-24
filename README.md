@@ -48,11 +48,6 @@ const gs = (0.21 * pixeldata[0]) + (0.72 * pixeldata[1]) + (0.07 * pixeldata[2])
 ```
 
 The included height maps are all in black and white but it is possible to use colored images.
-Use the custom function and tinker on the value of the coefficients to get the desired relief height.
-
-```javascript
-const gs = (redCoeff) * pixeldata[0]) + (greenCoeff * pixeldata[1]) + (blueCoeff * pixeldata[2])
-```
 
 The images I used for the demo are located in the `public` directory so it is possible to add more or perhaps even allow upload from the user.
 
@@ -61,56 +56,102 @@ The `black` represents the lowest level while `white` the highest level.
 Sharp contrasts will become deep ridges so it is better to blur or soften the edges.
 Adjust the resulting height using the `level` slider in `OPTIONS` panel to make the output visually appealing.
 
-In `three.js`, I use `PlaneGeometry` to prepare the `mesh`, rotate it so that it will be flat on the ground and applied the relief values by editing the vertices.
+From previous version, I rewrote the geometry creation part from using native `Plane Geometry` to creating everything on the fly. I found a nice [example](https://github.com/Claeb101/procedural-mesh-animation) that outlines how to do it by scratch.
 
 ```javascript
-const geometry = new PlaneGeometry( 50, 50, width - 1, height - 1 )
-const vert = geometry.attributes.position.array
+for (let yi = 0; yi < height; yi++) {
+    for (let xi = 0; xi < width; xi++) {
+        
+        let x = sep * (xi - (width - 1) / 2)
+        let y = sep * (yi - (height + 1) / 2)
+        let z = 0
 
-const delta = (options.level - 50) / max
+        positions.push(x, y, z)
+        colors.push(1, 0, 0)
+        normals.push(0, 0, 1)
 
-for (let i = 0; i < vert.length; i+=3) {
-
-    let k = i / 3
-
-    // z coordinate
-    vert[i + 2] = delta * data[k].value
-
+    }
 }
 ```
 
-I am applying the relief values in the `z-coordinate` since, by default, the original plane is vertically standing.
-
-Notice also that when I extract the relief values from the image, the outer loop is the `y-axis`.
-This is important otherwise when you apply the image as color map later on, it may not coincide.
+This will give us the vertices, vertex color and normals.
+As for indices and uvs,
 
 ```javascript
-let colorMap = useLoader(TextureLoader, `/${image}`)
+let indices = [], uvs = []
 
-return (
-    <mesh rotation={[-0.5 * Math.PI, 0, 0]}>
-        <planeGeometry args={[10, 10, 5, 5]} />
-        <meshStandardMaterial color={0xffffff} map={colorMap} />
-    </mesh>
-)
+let i = 0
+
+for (let yi = 0; yi < height - 1; yi++) {
+    for (let xi = 0; xi < width - 1; xi++) {
+        indices.push(i, i + 1, i + width + 1)
+        indices.push(i + width + 1, i + width, i)
+        i++
+    }
+    i++
+}
+
+for (let y = height - 1; y >= 0; y--) {
+    for (let x = 0; x < width; x++) {
+        const u = Math.round(10000 * x / width)/10000
+        const v = Math.round(10000 * y / height)/10000
+        uvs.push(u, v)
+    }
+}
 ```
+This [article](https://paulyg.f2s.com/uv.htm) explains how to compute for uv.
+Now, we then plug all the data it in our `mesh`
+
+```javascript
+<mesh>
+    <bufferGeometry>
+        <bufferAttribute
+        attach="attributes-position"
+        array={positions}
+        count={positions.length / 3}
+        itemSize={3}
+        />
+        <bufferAttribute
+        attach="attributes-normal"
+        array={normals}
+        count={normals.length / 3}
+        itemSize={3}
+        />
+        <bufferAttribute
+        attach="attributes-color"
+        array={colors}
+        count={colors.length / 3}
+        itemSize={3}
+        />
+        <bufferAttribute
+        attach="attributes-uv"
+        array={uvs}
+        count={uvs.length / 2}
+        itemSize={2}
+        />
+        <bufferAttribute
+        attach="attributes-index"
+        array={indices}
+        count={indices.length}
+        itemSize={1}
+        />
+    </bufferGeometry>
+    <meshStandardMaterial vertexColors flatShading side={DoubleSide} />
+</mesh>
+```
+
+This will give you a vertical plane as a starting point.
 
 > ***Please note that the sample height maps are taken from the web***
 
 # Moving Forward
 
-
 ![Craggy Terrain](./docs/terrain.png "Craggy Terrain")
 
+After rewriting the code, it is now possible to show `vertexColor`.
+I removed several unnecessary custom options for simplicity.
 
-Currently, I am setting the updated geometry in `mesh` component directly.
-This is supposed to be not the recommended but I have not figured out other way for now.
-
-I am also just using 50 x 50 for the plane object. 
-Adjust it to your desired size if you want or make it dynamic according to the height maps.
-Please not that the resolution of the `height map` will greatly affect performance.
-
-In the future, I would like to use `vertexColors` to show the elevations just like in terrain maps.
+One of the side effect of the update is, it is now necessary to press the `Reload` button in the `Edit Options` panel to show the changes you made.
 
 # Setup
 
