@@ -31,7 +31,7 @@ const SelectItem = ({ label, disabled = false, value, onChange, items }) => {
             <label style={{
                 color: disabled ? '#555' : '#fff',
             }}>{ label }</label>
-            <select value={value} onChange={onChange}>
+            <select disabled={disabled} value={value} onChange={onChange}>
             {
                 items.map((item, index) => {
                     return (

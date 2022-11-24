@@ -41,11 +41,11 @@ const NavControl = ({ naviMode }) => {
             return <OrbitControls />
     }
 }
-
-const Stage = ({ naviMode, children }) => {
+            
+const Stage = ({ distance = 60, height = 25, naviMode, children }) => {
 
     return (
-        <Canvas camera={{ fov: 70, position: [10, 25, 60]}}>
+        <Canvas camera={{ fov: 70, position: [0, height, distance]}}>
             <NavControl naviMode={naviMode} />
             <ambientLight args={[0xffffff]} intensity={0.3} />
             <directionalLight position={[0, 2, 0]} rotation={[1.2 * Math.PI, 0, 0]} intensity={2.1} />

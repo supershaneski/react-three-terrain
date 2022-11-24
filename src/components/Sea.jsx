@@ -1,9 +1,10 @@
 import React from 'react'
+import { GlobalContext } from '../store/GlobalState'
 
 import { 
     PlaneGeometry, 
     //BoxGeometry, 
-    //DoubleSide, 
+    DoubleSide, 
     //RepeatWrapping, 
     //TextureLoader, 
     //Float32BufferAttribute 
@@ -30,9 +31,17 @@ import {
 
 const Sea = (props) => {
 
+    const { state } = React.useContext(GlobalContext)
+
     const meshRef = React.useRef()
     
-    const geometry = new PlaneGeometry( 50, 50, 200, 200 )
+    const sep = 0.5
+
+    const width = sep * props.width
+    const height = sep * props.height
+    
+    const geometry = new PlaneGeometry( width, height, 200, 200 )
+    
     const verts = geometry.attributes.position.array
 
     for(let i = 0; i < verts.length; i += 3) {
@@ -41,25 +50,24 @@ const Sea = (props) => {
     
     useFrame(({ clock }) => {
         
-        if(props.moveFlag) {
-            meshRef.current.position.y += (parseFloat(props.moveCoeff)/100) * Math.sin(clock.getElapsedTime())
+        if(state.app.seaMove) {
+            meshRef.current.position.y += (parseFloat(state.app.seaMoveCoeff)/100) * Math.sin(clock.getElapsedTime())
         }
         
     })
 
-    const py = parseInt(props.level) * parseFloat(props.levelCoeff)
+    const py = parseInt(state.app.seaLevel) * parseFloat(state.app.seaLevelCoeff)
 
     return (
         <mesh ref={meshRef} geometry={geometry} rotation={[-0.5 * Math.PI, 0, 0]} position={[0, py, 0]}>
             <meshPhongMaterial 
-            //side={DoubleSide}
+            side={DoubleSide}
             shininess={100} 
             specular={0x050505} 
             color={0x002633} 
             opacity={0.4} 
             transparent 
             flatShading
-            //envMap={envMap}
             />
         </mesh>
     )

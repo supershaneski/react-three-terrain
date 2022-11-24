@@ -1,6 +1,8 @@
 import React from 'react'
+import classes from './MapPanel.module.css'
 import BasePanel from './BasePanel'
 import Options from './Options'
+import { GlobalContext } from '../store/GlobalState'
 
 const reliefFunctions = [
     { text: 'Grayscale', value: 0 },
@@ -13,26 +15,97 @@ const navigationList = [
     { text: 'ArcballControls', value: 2 }
 ]
 
-const ControlPanel = (props) => {
+const colorModeList = [
+    { text: 'VertexColor', value: 0 },
+    { text: 'Color', value: 1 },
+    { text: 'NormalColor', value: 2 },
+]
+
+const patternList = [
+    { text: 'Pattern 1', value: 0 },
+    { text: 'Pattern 2', value: 1 },
+    { text: 'Pattern 3', value: 2 },
+    { text: 'Pattern 4', value: 3 },
+    { text: 'Pattern 5', value: 4 },
+]
+
+const ControlPanel = () => {
+
+    const { state, dispatch } = React.useContext(GlobalContext)
+
+    const setDispatch = (payload) => {
+        dispatch({type: 'app-set', payload})
+    }
+
+    const handleReload = () => {
+
+        setDispatch({ status: 1 })
+
+        setTimeout(setDispatch, 300, { status: 0 })
+
+    }
+
     return (
         <BasePanel title="Edit Options">
-            <Options.SliderItem label="Level" value={props.level} onChange={props.onChangeLevel} />
-            <Options.SelectItem label="Relief Function" value={props.reliefFunc} onChange={props.onChangeReliefFunc} items={reliefFunctions} />
-            <Options.TextItem label="Red" width="3em" disabled={props.reliefFunc === 0} value={props.redCoeff} onChange={props.onChangeRedCoeff} />
-            <Options.TextItem label="Green" width="3em" disabled={props.reliefFunc === 0} value={props.greenCoeff} onChange={props.onChangeGreenCoeff} />
-            <Options.TextItem label="Blue" width="3em" disabled={props.reliefFunc === 0} value={props.blueCoeff} onChange={props.onChangeBlueCoeff} />
-            <Options.CheckItem label="Wireframe" checked={props.wireframe} onChange={props.onChangeWireframe} />
-            <Options.CheckItem label="Normal Color" checked={props.normalColor} onChange={props.onChangeNormalColor} />
-            <Options.CheckItem label="Flat Shading*" checked={props.flatShading} onChange={props.onChangeFlatShading} />
-            <Options.CheckItem label="Use Texture*" checked={props.textureFlag} onChange={props.onChangeTextureFlag} />
-            <Options.CheckItem label="Use Color" checked={props.colorFlag} onChange={props.onChangeColorFlag} />
-            <Options.TextItem label="Color" disabled={!props.colorFlag} value={props.color} onChange={props.onChangeColor} />
-            <Options.CheckItem label="Show Sea" checked={props.seaFlag} onChange={props.onChangeSeaFlag} />
-            <Options.SliderItem label="Sea Level" disabled={!props.seaFlag} value={props.seaLevel} onChange={props.onChangeSeaLevel} />
-            <Options.TextItem label="Level Factor" disabled={!props.seaFlag} width="3em" value={props.seaLevelCoeff} onChange={props.onChangeSeaLevelCoeff} />
-            <Options.CheckItem label="Animated" disabled={!props.seaFlag} checked={props.seaMove} onChange={props.onChangeSeaMove} />
-            <Options.TextItem label="Jerk Factor" disabled={!props.seaMove || !props.seaFlag} width="3em" value={props.seaMoveCoeff} onChange={props.onChangeSeaMoveCoeff} />
-            <Options.SelectItem label="Navigation" value={props.naviMode} onChange={props.onChangeNaviMode} items={navigationList} />
+            <Options.SliderItem label={`Level (${state.app.level})`}
+            value={state.app.level} 
+            onChange={(e) => setDispatch({ level: parseInt(e.target.value) })}
+            />
+            <Options.CheckItem label="Wireframe" 
+            checked={state.app.wireframe} 
+            onChange={(e) => setDispatch({ wireframe: e.target.checked })}
+            />
+            <Options.SelectItem label="Color Mode"
+            value={state.app.colorMode}
+            onChange={(e) => setDispatch({ colorMode: parseInt(e.target.value) })}
+            items={colorModeList}
+            />
+            <Options.SelectItem label="VertexColor"
+            disabled={!(state.app.colorMode === 0)}
+            value={state.app.pattern}
+            onChange={(e) => setDispatch({ pattern: parseInt(e.target.value) })}
+            items={patternList}
+            />
+            <Options.CheckItem label="Texture"
+            disabled={state.app.colorMode === 2}
+            checked={state.app.textureFlag}
+            onChange={(e) => setDispatch({ textureFlag: e.target.checked })}
+            />
+            <Options.TextItem label="Color"
+            disabled={!(state.app.colorMode === 1)}
+            value={state.app.color}
+            onChange={(e) => setDispatch({ colorMode: e.target.value })}
+            />
+            <Options.CheckItem label="Show Sea"
+            checked={state.app.seaFlag}
+            onChange={(e) => setDispatch({ seaFlag: e.target.checked })}
+            />
+            <Options.SliderItem label={`Level (${state.app.seaLevel})`}
+            disabled={!state.app.seaFlag}
+            value={state.app.seaLevel}
+            onChange={(e) => setDispatch({ seaLevel: parseInt(e.target.value) })}
+            />
+            <Options.TextItem label="Level Factor" width="3em"
+            disabled={!state.app.seaFlag} 
+            value={state.app.seaLevelCoeff}
+            onChange={(e) => setDispatch({ seaLevelCoeff: e.target.value })}
+            />
+            <Options.CheckItem label="Animated"
+            disabled={!state.app.seaFlag}
+            checked={state.app.seaMove}
+            onChange={(e) => setDispatch({ seaMove: e.target.checked })}
+            />
+            <Options.TextItem label="Jerk Factor" width="3em"
+            disabled={!state.app.seaMove || !state.app.seaFlag} 
+            value={state.app.seaMoveCoeff}
+            onChange={(e) => setDispatch({ seaMoveCoeff: e.target.value })}
+            />
+            <Options.SelectItem label="Navigation"
+            value={state.app.naviMode}
+            onChange={(e) => setDispatch({ naviMode: e.target.value })}
+            items={navigationList}
+            />
+            <button onClick={handleReload} className={[classes.button, classes.clear].join(' ')}>Reload</button>
         </BasePanel>
     )
 }
