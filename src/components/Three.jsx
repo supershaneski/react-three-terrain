@@ -16,7 +16,7 @@ import {
 } from '@react-three/fiber'
 
 import { 
-    Sky, 
+    //Sky, 
     OrbitControls, 
     MapControls,
     ArcballControls,
@@ -41,7 +41,6 @@ const NavControl = ({ naviMode }) => {
             return <OrbitControls />
     }
 }
-//<Sky distance={100} sunPosition={[0, 1, 0]} inclination={0} azimuth={0.25} />
             
 const Stage = ({ distance = 60, height = 25, naviMode, children }) => {
 

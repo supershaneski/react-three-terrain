@@ -3,7 +3,7 @@ import React from 'react'
 import { scaleLinear } from "d3-scale"
 
 import { 
-    PlaneGeometry, 
+    //PlaneGeometry, 
     //BoxGeometry, 
     //DoubleSide, 
     //RepeatWrapping, 
@@ -67,7 +67,7 @@ const domainList = [
 const colorList = [
     ["#010755", "#ffd7b3", "#005501", "#666000", "#663300", "#ffffff"],
     ["#010755", "#805500", "#604020", "#003311"],
-    ["#000022", "#504422", "#881100", "#332000", "#523510", "#004d00"],
+    ["#000022", "#504422", "#881100", "#332000", "#523510", "#002505"],//004d00
     ["#222222", "#553210", "#461200", "#512105"],
     ["#660000", "#372213", "#746022"],
 ]
@@ -199,8 +199,6 @@ const Terrain = ({ mapData, options }) => {
         { name: "index", items: indices, size: 1 },
     ]
 
-    //<meshStandardMaterial map={texture} vertexColors flatShading />
-    
     return (
         <mesh rotation={[-0.5 * Math.PI, 0, 0]}>
             <CustomBuffer.Geometry attributes={attributes} />
@@ -208,38 +206,6 @@ const Terrain = ({ mapData, options }) => {
         </mesh>
     )
 
-}
-
-const Terrain2 = ({ mapData, options }) => {
-
-    const { map, width, height, max, data } = mapData
-
-    let texture = useLoader(TextureLoader, `/${map}`)
-
-    let sep = 0.5
-    
-    const geometry = new PlaneGeometry( sep * width, sep * height, width - 1, height - 1 )
-    const verts = geometry.attributes.position.array
-
-    const delta = (options.level - 50) / max
-
-    for (let i = 0; i < verts.length; i+=3) {
-    
-        let k = parseInt(i / 3)
-
-        if(k < data.length) {
-            verts[i + 2] = delta * data[k].value
-        }
-
-    }
-    
-    return (
-        <mesh geometry={geometry} rotation={[-0.5 * Math.PI, 0, 0]}>
-            <MaterialShader texture={texture} {...options} />
-        </mesh>
-    )
-
-    
 }
 
 Terrain.defaultProps = {

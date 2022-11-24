@@ -8,16 +8,11 @@ const Scene = () => {
     
     const { state, dispatch } = React.useContext(GlobalContext)
 
-    //const [mapData, setMapData] = React.useState(null)
-    //const [optionData, setOptionData] = React.useState(null)
-
     const [mapData, setMapData] = React.useState(null)
 
     React.useEffect(() => {
 
         const loadImage = () => {
-
-            console.log("load image...")
 
             const canvas = document.createElement('canvas')
             canvas.width = img.naturalWidth
@@ -56,14 +51,11 @@ const Scene = () => {
                 data: data,
             })
 
-            //dispatch({ type: 'app-set', payload: { status: 0 }})
             setDispatch({ status: 0 })
             
         }
 
         const errorImage = () => {
-            console.log("error loading image")
-            //dispatch({ type: 'app-set', payload: { status: 2 }})
             setDispatch({ status: 2 })
             setMapData(null)
         }
@@ -74,14 +66,12 @@ const Scene = () => {
 
         if(state.app.mapSource) {
 
-            //dispatch({ type: 'app-set', payload: { status: 1 }})
             setDispatch({ status: 1 })
 
             img.src = `/${state.app.mapSource}`
 
         } else {
 
-            //dispatch({ type: 'app-set', payload: { status: 0 }})
             setDispatch({ status: 0 })
             setMapData(null)
 
