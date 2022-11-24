@@ -142,6 +142,27 @@ Now, we then plug all the data it in our `mesh`
 
 This will give you a vertical plane as a starting point.
 
+We apply the `grayscale` data during vertex creation.
+To make this process simple, we make sure that the number of vertices and pixels are the same.
+
+```javascript
+for (let yi = 0; yi < height; yi++) {
+    for (let xi = 0; xi < width; xi++) {
+        
+        let d = data[k] // grayscale data
+        
+        let x = sep * (xi - (width - 1) / 2)
+        let y = sep * (yi - (height + 1) / 2)
+        let z = height * d.value / max
+
+        positions.push(x, y, z)
+        
+        k++
+
+    }
+}
+```
+
 > ***Please note that the sample height maps are taken from the web***
 
 # Moving Forward
