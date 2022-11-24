@@ -7,8 +7,8 @@ const initialState = {
         level: 70,
         wireframe: false,
         colorMode: 0,
-        vertexColor: true,
-        normalColor: true,
+        //vertexColor: true,
+        //normalColor: true,
         textureFlag: true,
         color: "#642310",
         seaFlag: true,
@@ -17,6 +17,7 @@ const initialState = {
         seaMove: true,
         seaMoveCoeff: 0.25,
         naviMode: 0,
+        pattern: 0,
     },
 }
 

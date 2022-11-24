@@ -113,30 +113,25 @@ const Scene = () => {
     }
 
     return (
-        <Three.Stage naviMode={state.app.naviMode}>
-            <mesh>
-                <boxGeometry args={[1, 1, 1]} />
-                <meshNormalMaterial flatShading />
-            </mesh>
+        <Three.Stage height={0.3 * mapData.max} distance={0.5 * mapData.width} naviMode={state.app.naviMode}>
+            <Terrain mapData={mapData} options={{
+                pattern: state.app.pattern,
+                level: state.app.level,
+                wireframe: state.app.wireframe,
+                colorMode: state.app.colorMode,
+                textureFlag: state.app.textureFlag,
+                color: state.app.color,
+            }} />
+            <GlobalContext.Consumer>
+                {({ state }) => {
+                    return state.app.seaFlag ? <Sea 
+                    width={mapData.width}
+                    height={mapData.height}
+                    /> : null
+                }}
+            </GlobalContext.Consumer>
         </Three.Stage>
     )
 }
-
-/*
-<group>
-            <Terrain mapData={mapData} options={optionData} />
-            {
-                optionData.seaFlag &&
-                <Sea 
-                width={mapData.width}
-                height={mapData.height}
-                level={optionData.seaLevel} 
-                levelCoeff={optionData.seaLevelCoeff}
-                moveFlag={optionData.seaMove}
-                moveCoeff={optionData.seaMoveCoeff}
-                />
-            }
-        </group>
-*/
 
 export default Scene

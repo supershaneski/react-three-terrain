@@ -21,6 +21,14 @@ const colorModeList = [
     { text: 'NormalColor', value: 2 },
 ]
 
+const patternList = [
+    { text: 'Pattern 1', value: 0 },
+    { text: 'Pattern 2', value: 1 },
+    { text: 'Pattern 3', value: 2 },
+    { text: 'Pattern 4', value: 3 },
+    { text: 'Pattern 5', value: 4 },
+]
+
 const ControlPanel = () => {
 
     const { state, dispatch } = React.useContext(GlobalContext)
@@ -39,7 +47,7 @@ const ControlPanel = () => {
 
     return (
         <BasePanel title="Edit Options">
-            <Options.SliderItem label="Level" 
+            <Options.SliderItem label={`Level (${state.app.level})`}
             value={state.app.level} 
             onChange={(e) => setDispatch({ level: parseInt(e.target.value) })}
             />
@@ -51,6 +59,12 @@ const ControlPanel = () => {
             value={state.app.colorMode}
             onChange={(e) => setDispatch({ colorMode: parseInt(e.target.value) })}
             items={colorModeList}
+            />
+            <Options.SelectItem label="VertexColor"
+            disabled={!(state.app.colorMode === 0)}
+            value={state.app.pattern}
+            onChange={(e) => setDispatch({ pattern: parseInt(e.target.value) })}
+            items={patternList}
             />
             <Options.CheckItem label="Texture"
             disabled={state.app.colorMode === 2}
@@ -66,7 +80,7 @@ const ControlPanel = () => {
             checked={state.app.seaFlag}
             onChange={(e) => setDispatch({ seaFlag: e.target.checked })}
             />
-            <Options.SliderItem label="Sea Level"
+            <Options.SliderItem label={`Level (${state.app.seaLevel})`}
             disabled={!state.app.seaFlag}
             value={state.app.seaLevel}
             onChange={(e) => setDispatch({ seaLevel: parseInt(e.target.value) })}

@@ -31,104 +31,27 @@ import {
 import CustomBuffer from './CustomBuffer'
 
 const MaterialShader = (props) => {
-    
-    if(props.normalColor) {
 
-        if(props.wireframe) {
-            return <lineBasicMaterial wireframe flatShading={props.flatShading} />
+    if(props.wireframe) {
+
+        if(props.colorMode === 0) {
+            return <lineBasicMaterial linewidth={2} wireframe vertexColors />
+        } else if(props.colorMode === 1) {
+            return <lineBasicMaterial linewidth={2} wireframe color={props.color} />
         } else {
-            return <meshNormalMaterial flatShading={props.flatShading} />
+            return <meshNormalMaterial linewidth={2} wireframe />
         }
-        
-        //return <meshNormalMaterial wireframe={props.wireframe} flatShading={props.flatShading} />
 
     } else {
 
-        if(props.colorFlag) {
-            
-            if(props.textureFlag) {
-
-                if(props.wireframe) {
-
-                    return <lineBasicMaterial
-                    wireframe={props.wireframe} 
-                    flatShading={props.flatShading}
-                    color={props.color}
-                    linewidth={2}
-                    />
-
-                } else {
-
-                    return <meshStandardMaterial
-                    flatShading={props.flatShading}
-                    color={props.color}
-                    map={props.texture}
-                    />
-
-                }
-
-                
-
-            } else {
-
-                if(props.wireframe) {
-
-                    return <lineBasicMaterial
-                    wireframe={props.wireframe} 
-                    flatShading={props.flatShading}
-                    color={props.color}
-                    linewidth={2}
-                    />
-
-                } else {
-
-                    return <meshStandardMaterial
-                    flatShading={props.flatShading}
-                    color={props.color}
-                    />
-
-                }
-            }
-            
+        if(props.colorMode === 0) {
+            return props.textureFlag ? <meshStandardMaterial map={props.texture} flatShading vertexColors /> : <meshStandardMaterial flatShading vertexColors />
+        } else if(props.colorMode === 1) {
+            return props.textureFlag ? <meshStandardMaterial map={props.texture} flatShading color={props.color} /> : <meshStandardMaterial flatShading color={props.color} />
         } else {
-
-            if(props.textureFlag) {
-
-                if(props.wireframe) {
-
-                    return <lineBasicMaterial
-                    wireframe={props.wireframe} 
-                    flatShading={props.flatShading}
-                    linewidth={2}
-                    />
-
-                } else {
-
-                    return <meshStandardMaterial
-                    flatShading={props.flatShading}
-                    map={props.texture}
-                    />
-
-                }
-
-            } else {
-
-                if(props.wireframe) {
-                    return <lineBasicMaterial
-                    wireframe={props.wireframe} 
-                    flatShading={props.flatShading}
-                    linewidth={2}
-                    />
-                } else {
-                    return <meshStandardMaterial
-                    flatShading={props.flatShading}
-                    />
-                }
-
-            }
-            
+            return <meshNormalMaterial flatShading />
         }
-        
+
     }
 
 }
@@ -136,11 +59,17 @@ const MaterialShader = (props) => {
 const domainList = [
     [ 0, 1/8, 1/4, 2/4, 3/4, 1 ],
     [ 0, 1/5, 2/5, 1 ],
+    [ 0, 1/6, 1/4, 5/8, 6/7, 1 ],
+    [ 0, 1/8, 1/2, 1 ],
+    [ 0, 1/5, 1 ],
 ]
 
 const colorList = [
     ["#010755", "#ffd7b3", "#005501", "#666000", "#663300", "#ffffff"],
-    ["#010755", "#805500", "#604020", "#003311"]
+    ["#010755", "#805500", "#604020", "#003311"],
+    ["#000022", "#504422", "#881100", "#332000", "#523510", "#004d00"],
+    ["#222222", "#553210", "#461200", "#512105"],
+    ["#660000", "#372213", "#746022"],
 ]
 
 const scaleOption = (max, index = 0) => {
@@ -168,19 +97,17 @@ const getColor = (color) => {
     }
 }
 
-const Terrain3 = ({ mapData, options }) => {
+const Terrain = ({ mapData, options }) => {
 
     const { map, width, height, max, data } = mapData
 
     const level = options.level
 
-    //const bias = (options.level - 50) / max
-
     let texture = useLoader(TextureLoader, `/${map}`)
 
     let sep = 0.5
 
-    const sOption = scaleOption(max, 0)
+    const sOption = scaleOption(max, options.pattern)
     const colorScale = scaleLinear()
         .domain(sOption.domain)
         .range(sOption.color)
@@ -189,7 +116,7 @@ const Terrain3 = ({ mapData, options }) => {
 
         let positions = [], colors = [], normals = []
 
-        const bias = (level - 50) / max
+        const bias = 1.2 * ((level - 50) / max)
 
         let k = 0
 
@@ -273,7 +200,7 @@ const Terrain3 = ({ mapData, options }) => {
     ]
 
     //<meshStandardMaterial map={texture} vertexColors flatShading />
-
+    
     return (
         <mesh rotation={[-0.5 * Math.PI, 0, 0]}>
             <CustomBuffer.Geometry attributes={attributes} />
@@ -283,16 +210,15 @@ const Terrain3 = ({ mapData, options }) => {
 
 }
 
-const Terrain = ({ mapData, options }) => {
+const Terrain2 = ({ mapData, options }) => {
 
     const { map, width, height, max, data } = mapData
 
     let texture = useLoader(TextureLoader, `/${map}`)
 
-
-
-
-    const geometry = new PlaneGeometry( 50, 50, width - 1, height - 1 )
+    let sep = 0.5
+    
+    const geometry = new PlaneGeometry( sep * width, sep * height, width - 1, height - 1 )
     const verts = geometry.attributes.position.array
 
     const delta = (options.level - 50) / max

@@ -5,13 +5,13 @@ import { GlobalContext } from '../store/GlobalState'
 
 const mapList = [
     { text: 'Map 1', map: 'map2.jpg', level: 70 },
-    { text: 'Map 2', map: 'map9.jpg', level: 56 },
-    { text: 'Map 3', map: 'map12.png', level: 61 },
+    { text: 'Map 2', map: 'map9.jpg', level: 65 },
+    { text: 'Map 3', map: 'map12.png', level: 70 },
     { text: 'Map 4', map: 'island3.jpg', level: 63 },
     { text: 'Map 5', map: 'map8.png', level: 55 },
     { text: 'Map 6', map: 'map26.png', level: 55 },
-    { text: 'Map 7', map: 'canyon.png', level: 58 }, 
-    { text: 'Map 8', map: 'victoriax.jpg', level: 58 }, 
+    { text: 'Map 7', map: 'canyon.png', level: 65 }, 
+    { text: 'Map 8', map: 'victoria.jpg', level: 60 },
 ]
 
 const setClassButton = (selected) => selected ? [classes.button, classes.selected].join(' ') : classes.button
