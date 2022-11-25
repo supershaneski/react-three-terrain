@@ -75,6 +75,19 @@ for (let yi = 0; yi < height; yi++) {
 ```
 
 This will give us the vertices, vertex color and normals.
+
+I used `scaleLinear` function from [d3-scale](https://github.com/d3/d3-scale) to get the color values per vertices.
+
+```javascript
+const colorScale = scaleLinear()
+    .domain([0, 0.4, 1])
+    .range(['#000000', '#006622', '#ff88aa'])]
+
+...
+
+const color = colorScale(d) // where d is the grayscale value
+```
+
 As for indices and uvs,
 
 ```javascript
