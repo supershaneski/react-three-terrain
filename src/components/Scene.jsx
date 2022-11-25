@@ -3,6 +3,7 @@ import Terrain from './Terrain'
 import Sea from './Sea'
 import Three from './Three'
 import { GlobalContext } from '../store/GlobalState'
+//import { Vector3 } from 'three'
 
 const Scene = () => {
     

@@ -12,6 +12,7 @@ const mapList = [
     { text: 'Map 6', map: 'map26.png', level: 55 },
     { text: 'Map 7', map: 'canyon.png', level: 65 }, 
     { text: 'Map 8', map: 'victoria.jpg', level: 60 },
+    { text: 'Map 9', map: 'britain.jpg', level: 52 },
 ]
 
 const setClassButton = (selected) => selected ? [classes.button, classes.selected].join(' ') : classes.button
